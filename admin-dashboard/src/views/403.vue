@@ -1,5 +1,5 @@
 <template>
-  <div>403</div>
+  <div>403---没有权限</div>
 </template>
 
 <script setup></script>

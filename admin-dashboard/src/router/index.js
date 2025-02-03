@@ -4,6 +4,8 @@ import User from '@/views/User.vue'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import Forbidden from '@/views/403.vue'
+import UnAuthPage from '@/views/401.vue'
+import NotPage from '@/views/404.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const routes = [
@@ -11,7 +13,10 @@ const routes = [
   { path: '/user', component: User, meta: { requiresAuth: true } },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
+  { path: '/logs', component: () => import('@/views/Logs.vue'), meta: { requiresAuth: true } },
   { path: '/403', component: Forbidden },
+  { path: '/401', component: UnAuthPage },
+  { path: '/404', component: NotPage },
 ]
 
 const router = createRouter({
@@ -23,7 +28,9 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next('/403') // 未认证跳转到 403
+    next('/401')
+  } else if (to.meta.requiresAdmin && !authStore.isAdmin) {
+    next('/403')
   } else {
     next()
   }
