@@ -1,5 +1,14 @@
 <script setup>
-import { /**RouterLink， */ RouterView } from 'vue-router'
+import { /**RouterLink， */ RouterView, useRouter } from 'vue-router'
+import { useAuthStore } from './stores/auth'
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+const logout = () => {
+  authStore.logout()
+  router.replace('/login')
+}
 </script>
 
 <template>
@@ -9,6 +18,7 @@ import { /**RouterLink， */ RouterView } from 'vue-router'
     <RouterLink to="/login">登录</RouterLink>
     <RouterLink to="/logs">日志</RouterLink>
   </nav>
+  <button @click="logout">退出登录</button>
   <RouterView />
 </template>
 

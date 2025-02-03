@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './auth/user.entity';
 import { Log } from './log/log.entity';
 import { GlobalJwtModule } from './jwt/jwt.module'; // 导入全局的 JwtModule
+import { GlobalRedisModule } from './redis/redis.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -22,6 +23,7 @@ import { GlobalJwtModule } from './jwt/jwt.module'; // 导入全局的 JwtModule
     GlobalJwtModule,
     AuthModule,
     LogModule,
+    GlobalRedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],

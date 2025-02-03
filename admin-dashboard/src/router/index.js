@@ -27,8 +27,13 @@ const router = createRouter({
 // 导航守卫
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
+  console.log('to', to)
+
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next('/401')
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath },
+    })
   } else if (to.meta.requiresAdmin && !authStore.isAdmin) {
     next('/403')
   } else {

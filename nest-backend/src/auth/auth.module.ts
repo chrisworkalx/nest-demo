@@ -11,5 +11,6 @@ import { LogModule } from '../log/logs.module';
   imports: [TypeOrmModule.forFeature([User]), LogModule],
   controllers: [AuthController],
   providers: [AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}

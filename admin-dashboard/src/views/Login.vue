@@ -18,9 +18,12 @@
 
 <script setup>
 import { reactive } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
+const route = useRoute()
+const router = useRouter()
 const logInfo = reactive({
   username: '',
   password: '',
@@ -29,6 +32,8 @@ async function handleSubmit() {
   await authStore.login(logInfo.username, logInfo.password)
   logInfo.username = ''
   logInfo.password = ''
+  const redirect = route.query.redirect || '/'
+  router.push(redirect)
 }
 </script>
 

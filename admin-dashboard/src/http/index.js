@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
+import router from '../router'
 
 const instance = axios.create({
   baseURL: '/api',
@@ -13,5 +14,27 @@ instance.interceptors.request.use((config) => {
   }
   return config
 })
+
+instance.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      const authStore = useAuthStore()
+      authStore.logout()
+      const { pathname, search } = location
+      const { fullPath } = router.resolve(`${pathname}${search}`)
+      console.log('fullPath', fullPath)
+      router.replace({
+        path: '/login',
+        query: {
+          redirect: fullPath,
+        },
+      })
+    }
+    return Promise.reject(error)
+  },
+)
 
 export default instance

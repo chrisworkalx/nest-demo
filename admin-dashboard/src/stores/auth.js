@@ -18,7 +18,8 @@ export const useAuthStore = defineStore('auth', {
       localStorage.setItem('token', data.token)
       localStorage.setItem('role', data.role)
     },
-    logout() {
+    async logout() {
+      await http.post('/auth/logout')
       this.token = null
       this.role = null
       localStorage.removeItem('token')

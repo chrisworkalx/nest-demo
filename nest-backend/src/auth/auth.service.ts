@@ -6,6 +6,7 @@ import { User } from './user.entity';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { LogService } from '../log/logs.service';
+import { RedisService } from '../redis/redis.service';
 import { Role } from './role.enum';
 
 @Injectable()
@@ -14,6 +15,7 @@ export class AuthService {
     @InjectRepository(User) private userRepo: Repository<User>,
     private jwtService: JwtService,
     private logService: LogService,
+    private redisClient: RedisService,
   ) {}
 
   async register(username: string, password: string) {
@@ -44,5 +46,21 @@ export class AuthService {
     }
     user.role = role;
     return this.userRepo.save(user);
+  }
+
+  async logout(token: string) {
+    // 记录登出日志
+
+    // 将 token 加入黑名单，设置过期时间为 token 的有效期
+    const payload = this.jwtService.verify(token);
+    await this.logService.createLog(
+      'LOGOUT',
+      payload.userId as number,
+      'User logged out',
+    );
+    const tokenExpiration = payload.exp - Math.floor(Date.now() / 1000);
+    await this.redisClient.set(token, 'blacklisted', tokenExpiration); // 设置过期时间与 token 相同
+
+    return { message: 'Logout successful' };
   }
 }

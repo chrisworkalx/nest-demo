@@ -1,6 +1,5 @@
 import { Module, Global } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-
 @Global() // 将此模块设置为全局模块
 @Module({
   imports: [

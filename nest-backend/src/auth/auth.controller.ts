@@ -1,10 +1,18 @@
-import { Controller, Request, Post, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Post,
+  Body,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LogService } from '../log/logs.service';
 import { AuthGuard } from './auth.guard';
 import { RolesGuard } from './roles.guard';
 import { Roles } from './roles.decorator';
 import { Role } from './role.enum';
+import { Request as ExpRequest } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -43,5 +51,19 @@ export class AuthController {
     );
 
     return user;
+  }
+
+  @Post('logout')
+  logout(@Req() request: ExpRequest) {
+    const authHeader = request.headers['authorization']; // 获取 Authorization 头部
+    if (!authHeader) {
+      throw new Error('Authorization header is missing');
+    }
+
+    const token = authHeader.split(' ')[1]; // 获取 Bearer token 部分
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+    return this.authService.logout(token);
   }
 }
