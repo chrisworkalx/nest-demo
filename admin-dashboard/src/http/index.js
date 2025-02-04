@@ -17,7 +17,8 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use(
   (response) => {
-    return response
+    // console.log('response', response)
+    return response.data.result || {}
   },
   (error) => {
     if (error.response.status === 401) {

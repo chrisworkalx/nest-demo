@@ -13,6 +13,8 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(username, password) {
       const { data } = await http.post('/auth/login', { username, password })
+
+      console.log('data', data)
       this.token = data.token
       this.role = data.role
       localStorage.setItem('token', data.token)

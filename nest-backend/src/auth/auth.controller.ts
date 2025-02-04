@@ -14,6 +14,9 @@ import { Roles } from './roles.decorator';
 import { Role } from './role.enum';
 import { Request as ExpRequest } from 'express';
 
+import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
+
+@ApiTags('认证') // Swagger 分类
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -27,6 +30,27 @@ export class AuthController {
   }
 
   @Post('login')
+
+  // 说明
+  @ApiOperation({
+    summary: '用户登录',
+    description: '使用用户名和密码进行登录',
+  })
+
+  // 示例
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        username: { type: 'string', example: 'admin' },
+        password: { type: 'string', example: '123456' },
+      },
+    },
+  })
+  // 接口成功返回示例
+  @ApiResponse({ status: 200, description: '返回 token' })
+  // 接口失败 返回示例
+  @ApiResponse({ status: 401, description: '用户名或密码错误' })
   login(@Body() body: { username: string; password: string }) {
     return this.authService.login(body.username, body.password);
   }

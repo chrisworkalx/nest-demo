@@ -1,10 +1,19 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards, Request } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthGuard } from './auth/auth.guard';
 
 import { RolesGuard } from './auth/roles.guard';
 import { Roles } from './auth/roles.decorator';
 import { Role } from './auth/role.enum';
+
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+
+@ApiTags('系统')
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -14,10 +23,15 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @ApiTags('用户')
+  @ApiBearerAuth() // 需要 Token 认证
   @Get('user')
   @UseGuards(AuthGuard)
-  getUser() {
-    return { message: 'Welcome, authenticated user!' };
+  @ApiOperation({ summary: '获取用户信息' })
+  @ApiResponse({ status: 200, description: '成功获取用户信息' })
+  getUser(@Request() req) {
+    const userId = req.user.userId;
+    return this.appService.getUserInfo(userId as number);
   }
 
   // 仅 ADMIN 角色可以访问 /admin：
