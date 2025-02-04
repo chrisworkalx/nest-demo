@@ -27,5 +27,3 @@ export class AppService {
     return info;
   }
 }
-{
-}

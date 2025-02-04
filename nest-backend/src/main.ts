@@ -5,11 +5,13 @@ import { HttpExceptionFilter } from './common/http-exception/http-exception.filt
 import { TransformInterceptor } from './common/transform/transform.interceptor';
 
 import { createSwaggerDocServer } from './docs/swagger';
+import { createReDocServer } from './docs/redoc';
 
 async function bootstrap(): Promise<void> {
   try {
     const app = await NestFactory.create(AppModule);
-    createSwaggerDocServer(app);
+    const documnet = createSwaggerDocServer(app);
+    createReDocServer(app, documnet);
     app.useGlobalFilters(new HttpExceptionFilter()); // 全局注册错误的过滤器(错误异常)
     app.useGlobalInterceptors(new TransformInterceptor()); // 全局注册成功过滤器
     await app.listen(process.env.PORT ?? 3000);

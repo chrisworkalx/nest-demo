@@ -19,4 +19,5 @@ export function createSwaggerDocServer<T extends INestApplication<any>>(
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
+  return document;
 }
