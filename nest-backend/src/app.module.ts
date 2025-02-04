@@ -6,6 +6,7 @@ import { LogModule } from './log/logs.module';
 import { GlobalJwtModule } from './jwt/jwt.module'; // 导入全局的 JwtModule
 import { GlobalRedisModule } from './redis/redis.module';
 import { GlobalTypeOrmModule } from './mysql/mysql.module';
+import { AdminModule } from './docs/admin/admin.module';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './auth/user.entity';
@@ -16,6 +17,7 @@ import { User } from './auth/user.entity';
     AuthModule,
     LogModule,
     GlobalRedisModule,
+    AdminModule,
     TypeOrmModule.forFeature([User]), //就想要在当前模块中使用数据库    否则service中无法导入相关数据库实例
   ],
   controllers: [AppController],
