@@ -1,0 +1,61 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    title 你好，#{name}！
+    style.
+      body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #ffffff;
+        text-align: center;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #ffffff;
+        color: #333;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .header {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      .content {
+        font-size: 18px;
+        line-height: 1.5;
+      }
+      .button {
+        display: inline-block;
+        padding: 12px 24px;
+        margin-top: 20px;
+        background: #667eea;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .footer {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #aaa;
+      }
+  body
+    .container
+      .header 🎉 欢迎, #{name} 🎉
+      .content
+        p 你好 #{name}，
+        p 感谢你注册我们的服务！我们很高兴与你一起探索更多可能。
+        p 立即点击下面的按钮，开始你的旅程：
+        //- a.button(href="#{action_url}") 这种不支持了
+        a.button(href=action_url) 立即开始
+        //- a.button(href="https://www.baidu.com") 立即开始
+        //- p 链接是：#{action_url}
+      .footer
+        p &copy; 2025 炫酷公司. 保留所有权利。

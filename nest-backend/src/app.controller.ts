@@ -1,10 +1,12 @@
-import { Controller, Get, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, UseGuards, Request, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthGuard } from './auth/auth.guard';
 
 import { RolesGuard } from './auth/roles.guard';
 import { Roles } from './auth/roles.decorator';
 import { Role } from './auth/role.enum';
+
+import { EmailService } from './email.service';
 
 import {
   ApiTags,
@@ -16,7 +18,10 @@ import {
 @ApiTags('系统')
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly emailService: EmailService,
+  ) {}
 
   @Get()
   getHello(): string {
@@ -47,5 +52,20 @@ export class AppController {
   @Roles(Role.ADMIN)
   getAdmin() {
     return { message: 'Welcome, admin!' };
+  }
+
+  @Get('send-email')
+  @ApiOperation({ summary: '发送邮件' })
+  async sendEmail(
+    @Query('email') email: string,
+    @Query('name') name: string,
+    @Query('link') link?: string,
+  ) {
+    await this.emailService.sendWelcomeEmail(
+      email,
+      name,
+      link || 'https://www.baidu.com',
+    );
+    return 'Email sent!';
   }
 }

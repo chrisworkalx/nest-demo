@@ -13,6 +13,7 @@ const logout = () => {
 
 <template>
   <nav class="nav">
+    <RouterLink to="/">首页</RouterLink>
     <RouterLink to="/user">访问用户</RouterLink>
     <RouterLink to="/register">注册</RouterLink>
     <RouterLink to="/login">登录</RouterLink>
