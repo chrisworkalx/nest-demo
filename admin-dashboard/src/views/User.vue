@@ -1,14 +1,24 @@
 <template>
-  <div class="user-page">User</div>
+  <div class="user-page">
+    <div v-for="(value, key) in state" :key="value">
+      <span>{{ key }}: </span>
+      <span>{{ value }}</span>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { reactive, onMounted } from 'vue'
 import http from '@/http'
+
+const state = reactive({
+  username: '',
+  role: '',
+})
 
 const getUser = async () => {
   const res = await http.get('/user')
-  console.log(res)
+  Object.assign(state, res.data)
 }
 
 onMounted(() => {

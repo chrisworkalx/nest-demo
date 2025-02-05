@@ -17,8 +17,8 @@ const logout = () => {
     <RouterLink to="/register">注册</RouterLink>
     <RouterLink to="/login">登录</RouterLink>
     <RouterLink to="/logs">日志</RouterLink>
+    <button @click="logout">退出登录</button>
   </nav>
-  <button @click="logout">退出登录</button>
   <RouterView />
 </template>
 
