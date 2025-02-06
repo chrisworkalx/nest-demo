@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -22,6 +23,13 @@ import { EmailService } from './email.service';
 // import { AppDataSource } from './mysql/data-source'; // 确保路径正确
 
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
+import { MongooseModule } from '@nestjs/mongoose';
+import { ChatGateway } from './chat/chat.gateway';
+import { ChatService } from './chat/chat.service';
+import { HttpModule } from '@nestjs/axios';
+import { ChatSession, ChatSessionSchema } from './schemas/chat-session.schema';
+import { ChatLog, ChatLogSchema } from './schemas/chat-log.schema';
 
 @Module({
   imports: [
@@ -54,6 +62,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     // AdminModule,
     TypeOrmModule.forFeature([User]), //就想要在当前模块中使用数据库    否则service中无法导入相关数据库实例
 
+    //邮件服务
     MailerModule.forRootAsync({
       imports: [ConfigModule], // 引入 ConfigModule
       inject: [ConfigService], // 注入 ConfigService
@@ -81,8 +90,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         };
       },
     }),
+
+    HttpModule,
+    MongooseModule.forRoot('mongodb://localhost:27017/chat-app'), // 连接 MongoDB chat-app为数据库
+    MongooseModule.forFeature([
+      { name: ChatSession.name, schema: ChatSessionSchema },
+    ]),
+    MongooseModule.forFeature([{ name: ChatLog.name, schema: ChatLogSchema }]),
   ],
   controllers: [AppController],
-  providers: [AppService, EmailService],
+  providers: [AppService, EmailService, ChatGateway, ChatService],
 })
 export class AppModule {}

@@ -4,11 +4,13 @@
     <div>
       <button @click="sendEmail">发送邮件测试</button>
     </div>
+    <Chat />
   </div>
 </template>
 
 <script setup>
 import http from '@/http'
+import Chat from '@/components/chat/chat.vue'
 const sendEmail = async () => {
   try {
     await http.get('/send-email', {

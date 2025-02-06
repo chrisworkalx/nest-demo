@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo-container
+    ports:
+      - '27017:27017'
+    # environment:
+    # MONGO_INITDB_ROOT_USERNAME: root_user
+    # MONGO_INITDB_ROOT_PASSWORD: root_pass
+    # MONGO_INITDB_DATABASE: chat-app
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:
+    driver: bridge
